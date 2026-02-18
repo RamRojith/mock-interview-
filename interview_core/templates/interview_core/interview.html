@@ -74,6 +74,7 @@
     const SESSION_ID = "{{ session_id }}";
     const CSRF_TOKEN = "{{ csrf_token }}";
     const INITIAL_QUESTION = "{{ initial_question|escapejs }}";
+    const INITIAL_QUESTION_ID = {{ initial_question_id|default:"null" }};
     const INITIAL_AUDIO_URL = "{{ initial_audio_url|default_if_none:'' }}";
 </script>
 {% load static %}
