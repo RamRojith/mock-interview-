@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Report - {{ report.metadata.student_name }}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .report-header {
+            text-align: center;
+            padding-bottom: 1.5rem;
+            border-bottom: 3px solid #3B5998;
+            margin-bottom: 2rem;
+        }
+
+        .report-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .report-subtitle {
+            font-size: 1rem;
+            color: #6B7280;
+        }
+
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: #F9FAFB;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .metadata-item {
+            padding: 0.5rem;
+        }
+
+        .metadata-label {
+            font-size: 0.85rem;
+            color: #6B7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .metadata-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1F2937;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #3B5998;
+        }
+
+        .subsection-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #3B5998;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .list-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #E5E7EB;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .icon-strength {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .icon-weakness {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .icon-tip {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .score-card {
+            text-align: center;
+            padding: 1rem;
+            background: #3B5998;
+            color: white;
+            border-radius: 8px;
+        }
+
+        .score-label {
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .score-max {
+            font-size: 1rem;
+        }
+
+        .overall-score {
+            text-align: center;
+            padding: 1.5rem;
+            background: #3B5998;
+            color: white;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .overall-score-value {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+
+        .readiness-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        .verdict-box {
+            background: #F0F9FF;
+            border-left: 4px solid #3B5998;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+            line-height: 1.7;
+            color: #1F2937;
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+    <!-- Report Header -->
+    <div class="report-header">
+        <h1 class="report-title">AI Mock Interview Evaluation Report</h1>
+        <p class="report-subtitle">Comprehensive Performance Analysis</p>
+    </div>
+
+    <!-- Metadata -->
+    <div class="metadata-grid">
+        <div class="metadata-item">
+            <div class="metadata-label">Student Name</div>
+            <div class="metadata-value">{{ report.metadata.student_name }}</div>
+        </div>
+        <div class="metadata-item">
+            <div class="metadata-label">Interview Topic</div>
+            <div class="metadata-value">{{ report.metadata.topic }}</div>
+        </div>
+        <div class="metadata-item">
+            <div class="metadata-label">Date</div>
+            <div class="metadata-value">{{ report.metadata.date }}</div>
+        </div>
+        <div class="metadata-item">
+            <div class="metadata-label">Total Questions</div>
+            <div class="metadata-value">{{ report.metadata.total_questions }}</div>
+        </div>
+    </div>
+
+    <!-- Interview Performance Analysis -->
+    <section>
+        <h2 class="section-title">Interview Performance Analysis</h2>
+        
+        <h3 class="subsection-title">Strengths</h3>
+        {% for strength in report.interview_performance.strengths %}
+        <div class="list-item">
+            <div class="list-icon icon-strength">✓</div>
+            <div>{{ strength }}</div>
+        </div>
+        {% endfor %}
+
+        <h3 class="subsection-title">Areas to Improve</h3>
+        {% for weakness in report.interview_performance.weaknesses %}
+        <div class="list-item">
+            <div class="list-icon icon-weakness">!</div>
+            <div>{{ weakness }}</div>
+        </div>
+        {% endfor %}
+
+        <h3 class="subsection-title">Improvement Suggestions</h3>
+        {% for tip in report.interview_performance.improvement_tips %}
+        <div class="list-item">
+            <div class="list-icon icon-tip">→</div>
+            <div>{{ tip }}</div>
+        </div>
+        {% endfor %}
+    </section>
+
+    <div class="page-break"></div>
+
+    <!-- Grammar & Language Analysis -->
+    <section>
+        <h2 class="section-title">Grammar & Language Skills Analysis</h2>
+        
+        <div class="metadata-grid">
+            <div class="metadata-item">
+                <div class="metadata-label">Grammar Score</div>
+                <div class="metadata-value">{{ report.grammar_analysis.grammar_score }}/10</div>
+            </div>
+            <div class="metadata-item">
+                <div class="metadata-label">Vocabulary Level</div>
+                <div class="metadata-value">{{ report.grammar_analysis.vocabulary_level }}</div>
+            </div>
+        </div>
+
+        <h3 class="subsection-title">Common Issues</h3>
+        {% for issue in report.grammar_analysis.common_issues %}
+        <div class="list-item">
+            <div class="list-icon icon-weakness">!</div>
+            <div>{{ issue }}</div>
+        </div>
+        {% endfor %}
+
+        <h3 class="subsection-title">Improvement Suggestions</h3>
+        {% for suggestion in report.grammar_analysis.improvement_suggestions %}
+        <div class="list-item">
+            <div class="list-icon icon-tip">→</div>
+            <div>{{ suggestion }}</div>
+        </div>
+        {% endfor %}
+    </section>
+
+    <!-- Overall Evaluation -->
+    <section>
+        <h2 class="section-title">Overall Evaluation</h2>
+        
+        <div class="score-grid">
+            <div class="score-card">
+                <div class="score-label">Interview Skills</div>
+                <div class="score-value">{{ report.overall_evaluation.interview_skills_score }}<span class="score-max">/10</span></div>
+            </div>
+            <div class="score-card">
+                <div class="score-label">Grammar Skills</div>
+                <div class="score-value">{{ report.overall_evaluation.grammar_skills_score }}<span class="score-max">/10</span></div>
+            </div>
+            <div class="score-card">
+                <div class="score-label">Confidence</div>
+                <div class="score-value">{{ report.overall_evaluation.confidence_score }}<span class="score-max">/10</span></div>
+            </div>
+        </div>
+
+        <div class="overall-score">
+            <div class="score-label">Overall Score</div>
+            <div class="overall-score-value">{{ report.overall_evaluation.overall_score }}<span class="score-max">/10</span></div>
+            <div class="readiness-badge">{{ report.overall_evaluation.readiness_level }}</div>
+        </div>
+
+        <h3 class="subsection-title">Final Verdict</h3>
+        <div class="verdict-box">
+            {{ report.overall_evaluation.final_verdict }}
+        </div>
+
+        <h3 class="subsection-title">Improvement Roadmap</h3>
+        {% for step in report.overall_evaluation.improvement_roadmap %}
+        <div class="list-item">
+            <div class="list-icon icon-tip">{{ forloop.counter }}</div>
+            <div>{{ step }}</div>
+        </div>
+        {% endfor %}
+    </section>
+</body>
+</html>
