@@ -1,209 +1,275 @@
-# AI Mock Interview System - RIT ERP Portal
+# AI Mock Interview System
 
-A professional Django-based mock interview application styled to match the Ramco Institute of Technology (RIT) Enterprise Resource Planning (ERP) portal design system.
+A comprehensive AI-powered mock interview platform with speech recognition, real-time feedback, and detailed performance reports.
 
-## 🎯 Features
+## 🚀 Quick Start
 
-### AI-Powered Interview System
-- **Whisper** for Speech-to-Text transcription
-- **Ollama (Llama-3)** for intelligent interview logic and feedback
-- **Edge TTS** for natural voice output
-- Real-time audio recording and processing
-- Intelligent question generation based on responses
-- Detailed AI feedback and scoring
+### Start the Application (Easiest Way)
+```bash
+# Just double-click or run:
+start_services.bat
+```
 
-### Professional ERP-Styled UI
-- **Institutional Design**: Matches RIT ERP portal aesthetics
-- **Responsive Layout**: Desktop-first, mobile-friendly
-- **Clean Interface**: Professional academic styling
-- **Accessible**: WCAG-friendly design patterns
-- **Three Main Pages**:
-  - Landing page with service cards
-  - Interview start/login page
-  - Interactive interview room
+This automatically handles everything:
+- Checks Ollama installation
+- Starts required services
+- Downloads AI models
+- Launches the application
 
-## 🎨 Design System
+### Access the Application
+Open your browser to: **http://127.0.0.1:8000/**
 
-### Color Palette
-- Primary Blue: `#2F4C9F`
-- Secondary Blue: `#3B5FCC`
-- Background: `#F8FAFC`
-- Success Green: `#10B981`
-- Danger Red: `#EF4444`
+## 📚 Documentation
 
-### Key Design Elements
-- Gradient blue header with rounded corners
-- Card-based portal selection
-- Soft shadows and hover effects
-- Status badges with color coding
-- Professional typography (Segoe UI)
+- **[QUICK_START.md](QUICK_START.md)** - Step-by-step startup guide
+- **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Solutions to common issues
+- **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)** - Production deployment
+- **[GITHUB_SETUP.md](GITHUB_SETUP.md)** - Git repository setup
 
-## 📋 Prerequisites
+## ✨ Features
 
-1. **Python 3.10+** (Installed)
-2. **FFmpeg**: Required for audio processing
-   - **Windows**: Download from [gyan.dev](https://www.gyan.dev/ffmpeg/builds/), extract, and add `bin` folder to System PATH
-   - *Note: The app will fail to transcribe audio without this*
-3. **Ollama**: Required for AI logic
-   - Download from [ollama.com](https://ollama.com)
-   - Run: `ollama pull llama3` (or `mistral`)
+### 🎤 Voice-Based Interviews
+- Real-time speech-to-text using Whisper AI
+- Natural text-to-speech responses
+- Microphone testing and troubleshooting
 
-## 🚀 Setup
+### 🤖 AI-Powered Evaluation
+- Intelligent question generation using Llama3
+- Real-time feedback on answers
+- Scoring based on relevance, clarity, and confidence
 
-1. **Install Dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-   *(Note: Dependencies are already installed in this environment)*
+### 📊 Comprehensive Reports
+- Interview performance analysis
+- Grammar and language skills evaluation
+- Detailed improvement suggestions
+- Overall readiness assessment
 
-2. **Database Migration** (Already done):
-   ```bash
-   python manage.py migrate
-   ```
+### 🎨 Professional UI
+- Modern ERP-style design
+- Responsive layout
+- Intuitive navigation
+- Real-time status indicators
 
-3. **Collect Static Files** (for production):
-   ```bash
-   python manage.py collectstatic
-   ```
+## 🛠️ Technology Stack
 
-## 🎮 Running the Application
+- **Backend**: Django 4.2+
+- **AI Models**: 
+  - Whisper (Speech-to-Text)
+  - Llama3 via Ollama (Interview AI)
+  - Edge-TTS (Text-to-Speech)
+- **Frontend**: HTML5, CSS3, JavaScript
+- **Database**: SQLite
 
-1. Start the server:
-   ```bash
-   cd mock_interview_system
-   python manage.py runserver
-   ```
+## 📋 System Requirements
 
-2. Access the application:
-   - **Landing Page**: http://127.0.0.1:8000/
-   - **Start Interview**: http://127.0.0.1:8000/start/
-   - **Interview Room**: Automatically redirected after starting session
+- **OS**: Windows 10/11
+- **Python**: 3.8+
+- **RAM**: 8GB minimum (16GB recommended)
+- **Disk Space**: 10GB free
+- **Internet**: Stable connection required
+- **Browser**: Chrome, Edge, or Firefox
 
-3. Using the Interview System:
-   - Click "Start Interview →" on the landing page
-   - Enter interview topic (e.g., "Python Developer", "Data Analyst")
-   - Click "Login to Interview Portal"
-   - Allow microphone access when prompted
-   - Answer AI questions by clicking "Start Answer"
-   - Receive instant feedback and scores
+## 🔧 Installation
+
+### 1. Install Ollama
+Download from: https://ollama.ai
+
+### 2. Clone Repository
+```bash
+git clone https://github.com/RamRojith/mock-interview-.git
+cd mock_interview_system
+```
+
+### 3. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Setup Database
+```bash
+python manage.py migrate
+```
+
+### 5. Download AI Model
+```bash
+ollama pull llama3
+```
+
+### 6. Start Application
+```bash
+start_services.bat
+```
+
+## 🎯 Usage Guide
+
+### Starting an Interview
+
+1. **Navigate to Home**: Open http://127.0.0.1:8000/
+2. **Test Microphone**: Click "Microphone Test" (recommended)
+3. **Start Interview**: Click "Start Interview"
+4. **Enter Topic**: Specify role (e.g., "Python Developer")
+5. **Begin Session**: Click "Login to Interview Portal"
+
+### During the Interview
+
+1. **Listen**: AI asks a question (audio + text)
+2. **Record**: Click "Start Recording" to answer
+3. **Stop**: Click "Stop Recording" when finished
+4. **Feedback**: Receive score and feedback
+5. **Continue**: Answer next question
+6. **Complete**: Finish all questions
+
+### Viewing Reports
+
+1. Click "End Interview" or complete all questions
+2. View comprehensive evaluation report
+3. Review strengths and weaknesses
+4. Get improvement suggestions
+5. Download or print report
+
+## 🔍 Service Health Check
+
+Check if all services are running:
+```bash
+# Visit in browser:
+http://127.0.0.1:8000/api/health/
+```
+
+Returns:
+```json
+{
+  "status": "healthy",
+  "services": {
+    "ollama": true,
+    "whisper": true,
+    "edge_tts": true
+  },
+  "message": "All services operational"
+}
+```
+
+## ⚠️ Troubleshooting
+
+### Error: "Failed to start session"
+
+**Cause**: Ollama service not running
+
+**Solution**:
+```bash
+# Start Ollama in a separate terminal
+ollama serve
+```
+
+### Error: "Microphone not working"
+
+**Solution**:
+1. Allow microphone access in browser
+2. Check system microphone settings
+3. Use "Microphone Test" page
+4. Try different browser
+
+### Error: "Slow response times"
+
+**Solution**:
+- First load takes time (model loading)
+- Subsequent requests are faster
+- Ensure stable internet connection
+- Close unnecessary applications
+
+For more solutions, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
+
+## 🔄 Fallback Mode
+
+The system includes automatic fallback mode:
+- **Ollama unavailable**: Uses pre-defined questions
+- **Whisper fails**: Shows error messages
+- **Edge-TTS fails**: Displays text-only questions
+
+This ensures interviews can continue even if some services are down.
 
 ## 📁 Project Structure
 
 ```
 mock_interview_system/
-├── interview_core/
-│   ├── templates/
-│   │   └── interview_core/
-│   │       ├── base.html          # Base template with ERP header
-│   │       ├── landing.html       # Landing page with portal cards
-│   │       ├── index.html         # Interview start form
-│   │       └── interview.html     # Interview room interface
-│   ├── models.py                  # Database models
-│   ├── views.py                   # View functions
-│   ├── urls.py                    # URL routing
-│   ├── ai_service.py              # AI integration (Whisper, Ollama, TTS)
-│   └── serializers.py             # REST API serializers
-├── static/
-│   ├── css/
-│   │   ├── erp-style.css         # Complete ERP design system
-│   │   └── color-reference.css   # Color palette reference
-│   └── js/
-│       └── interview.js          # Interview room functionality
-├── media/
-│   ├── tts/                      # Generated question audio
-│   └── responses/                # User response recordings
-├── UI_DOCUMENTATION.md           # Complete UI/UX documentation
-├── DEPLOYMENT_GUIDE.md           # Deployment instructions
-└── README.md                     # This file
+├── interview_core/              # Main Django app
+│   ├── ai_service.py           # AI integration
+│   ├── views.py                # API endpoints
+│   ├── models.py               # Database models
+│   ├── templates/              # HTML templates
+│   └── migrations/             # Database migrations
+├── mock_interview_system/       # Django project settings
+├── media/                       # Audio files
+│   ├── responses/              # User recordings
+│   └── tts/                    # Generated speech
+├── static/                      # CSS, JS, images
+├── start_services.bat          # Automated startup
+├── manage.py                   # Django management
+├── requirements.txt            # Python dependencies
+├── README.md                   # This file
+├── QUICK_START.md             # Quick start guide
+└── TROUBLESHOOTING.md         # Troubleshooting guide
 ```
 
-## 🎯 Page Routes
+## 🔐 Security Notes
 
-| Route | Template | Purpose |
-|-------|----------|---------|
-| `/` | `landing.html` | Main landing page with service cards |
-| `/start/` | `index.html` | Interview topic selection |
-| `/interview/<id>/` | `interview.html` | Active interview session |
-| `/api/start-session/` | API | Create new interview session |
-| `/api/process-response/` | API | Process audio and generate feedback |
+- Development server only (not for production)
+- Keep API keys secure
+- Don't expose to public internet
+- Use environment variables for sensitive data
 
-## 🛠️ Troubleshooting
+## 🚀 Deployment
 
-### Audio Issues
-- **"Error transcribing"**: Ensure FFmpeg is installed and in your PATH. Restart terminal after installing.
-- **"Microphone access denied"**: Check browser permissions (Chrome/Edge recommended)
-- **Audio not playing**: Verify media files exist in `media/tts/` directory
+For production deployment, see [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)
 
-### AI Issues
-- **"Unable to generate feedback"**: Ensure Ollama is running (`ollama serve`) and you have pulled the model (`ollama pull llama3`)
-- **Slow responses**: AI processing takes time; wait for "AI is evaluating..." status
+## 📝 API Endpoints
 
-### UI Issues
-- **CSS not loading**: Clear browser cache (Ctrl+Shift+R) and verify static files
-- **Layout broken**: Check browser console for errors
-- **Mobile view issues**: Test in responsive mode (F12 → Device toolbar)
+- `GET /` - Landing page
+- `GET /start/` - Interview start page
+- `GET /interview/<id>/` - Interview session
+- `GET /report/<id>/` - Interview report
+- `POST /api/start-session/` - Create interview session
+- `POST /api/process-response/` - Process user response
+- `GET /api/health/` - Service health check
 
-## 📚 Documentation
+## 🤝 Contributing
 
-- **UI_DOCUMENTATION.md**: Complete design system reference
-- **DEPLOYMENT_GUIDE.md**: Production deployment guide
-- **color-reference.css**: Color palette and usage guidelines
+1. Fork the repository
+2. Create feature branch
+3. Commit changes
+4. Push to branch
+5. Create Pull Request
 
-## 🌟 Key Features
+## 📄 License
 
-### Landing Page
-- Professional ERP-styled header
-- Hero section with welcome message
-- Three service cards:
-  - Student Mock Interview (Active)
-  - Interview History (Coming Soon)
-  - Interview Guidelines (Coming Soon)
+This project is for educational purposes.
 
-### Interview Start Page
-- Clean form design
-- Topic input with validation
-- Microphone access notification
-- Professional button styling
+## 👥 Authors
 
-### Interview Room
-- Real-time question display
-- Audio playback for AI questions
-- Recording controls with status indicators
-- Instant AI feedback with scores
-- Smooth transitions and animations
+- Ram Rojith
 
-## 🔒 Security Notes
+## 🙏 Acknowledgments
 
-- CSRF protection enabled on all forms
-- Secure cookie handling
-- Input validation and sanitization
-- Media file access controls
+- OpenAI Whisper for speech recognition
+- Ollama for AI model hosting
+- Edge-TTS for text-to-speech
+- Django community
 
-## 🚀 Future Enhancements
+## 📞 Support
 
-- User authentication (student login)
-- Interview history and analytics
-- Department-specific question banks
-- Performance tracking dashboard
-- Email notifications
-- Multi-language support
-- Video interview option
+For issues or questions:
+1. Check [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
+2. Review console error messages
+3. Verify all services are running
+4. Check system requirements
 
-## 📝 License
+## 🎓 Tips for Best Results
 
-This project is developed for Ramco Institute of Technology.
-
-## 👥 Support
-
-For issues or questions, refer to:
-- UI_DOCUMENTATION.md for design questions
-- DEPLOYMENT_GUIDE.md for setup issues
-- Django documentation: https://docs.djangoproject.com/
+1. **Environment**: Use in quiet space
+2. **Microphone**: Use quality microphone
+3. **Internet**: Ensure stable connection
+4. **Browser**: Use Chrome for best compatibility
+5. **Practice**: Regular practice improves scores
 
 ---
 
-**Developed for**: Ramco Institute of Technology  
-**Module**: AI Mock Interview Portal  
-**Design System**: RIT ERP Institutional Style  
-**Version**: 1.0  
-**Last Updated**: February 2026
+**Ready to practice?** Run `start_services.bat` and start your interview! 🎤✨
