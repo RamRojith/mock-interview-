@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.template.loader import render_to_string
 from rest_framework.views import APIView
 from rest_framework.response import Response as APIResponse
 from rest_framework import status, parsers
@@ -279,3 +280,63 @@ class ProcessResponseView(APIView):
             "audio_url": audio_url,
             "interview_complete": False
         }, status=status.HTTP_200_OK)
+
+
+def download_report_pdf(request, session_id):
+    """Generate and download PDF report"""
+    try:
+        from weasyprint import HTML, CSS
+        from weasyprint.text.fonts import FontConfiguration
+    except ImportError:
+        # Fallback if WeasyPrint is not installed
+        return HttpResponse(
+            "PDF generation library not installed. Please install weasyprint: pip install weasyprint",
+            status=500
+        )
+    
+    session = get_object_or_404(InterviewSession, id=session_id)
+    
+    # Gather all responses for this session
+    responses = Response.objects.filter(session=session).order_by('created_at')
+    
+    # Prepare data for report generation
+    session_data = {
+        'student_name': 'Student',
+        'topic': session.topic,
+        'interview_type': 'General',
+        'responses': [
+            {
+                'question': resp.question.text,
+                'answer': resp.transcription,
+                'score': resp.score,
+                'feedback': resp.ai_feedback,
+                'time_taken': 0
+            }
+            for resp in responses
+        ]
+    }
+    
+    # Generate comprehensive report using AI
+    report = ai_service.generate_comprehensive_report(session_data)
+    
+    context = {
+        'session': session,
+        'report': report,
+        'responses': responses
+    }
+    
+    # Render HTML template
+    html_string = render_to_string('interview_core/report_pdf.html', context)
+    
+    # Generate PDF
+    font_config = FontConfiguration()
+    html = HTML(string=html_string, base_url=request.build_absolute_uri())
+    
+    # Create PDF
+    pdf = html.write_pdf(font_config=font_config)
+    
+    # Create response
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="interview_report_{session.id}.pdf"'
+    
+    return response

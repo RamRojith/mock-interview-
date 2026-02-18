@@ -8,3 +8,4 @@ pydub
 soundfile
 requests
 edge-tts
+weasyprint
