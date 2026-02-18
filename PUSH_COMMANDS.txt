@@ -1,0 +1,31 @@
+# Git Push Commands for AI Mock Interview Project
+# Copy and paste these commands one by one in PowerShell
+
+# Step 1: Configure Git (replace with your details)
+git config user.name "RamRojith"
+git config user.email "your.email@example.com"
+
+# Step 2: Add remote repository
+git remote add origin https://github.com/RamRojith/mock-interview-.git
+
+# Step 3: Check if remote was added
+git remote -v
+
+# Step 4: Add all files
+git add .
+
+# Step 5: Commit changes
+git commit -m "AI Mock Interview Portal - Complete ERP Design with Report Generation"
+
+# Step 6: Set main branch
+git branch -M main
+
+# Step 7: Push to GitHub
+git push -u origin main
+
+# If you get authentication error, you'll need a Personal Access Token:
+# 1. Go to: https://github.com/settings/tokens
+# 2. Click "Generate new token (classic)"
+# 3. Select "repo" scope
+# 4. Copy the token
+# 5. Use it as your password when prompted
