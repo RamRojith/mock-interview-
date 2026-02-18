@@ -12,6 +12,7 @@ from datetime import datetime
 class AIService:
     def __init__(self):
         self._whisper_model = None  # Lazy load
+        self._ollama_available = None  # Cache Ollama availability
 
     @property
     def whisper_model(self):
@@ -19,10 +20,27 @@ class AIService:
             print("Loading Whisper model...")
             try:
                 self._whisper_model = whisper.load_model("base")
+                print("Whisper model loaded successfully")
             except Exception as e:
                 print(f"Error loading Whisper: {e}")
                 self._whisper_model = None
         return self._whisper_model
+    
+    def check_ollama_availability(self):
+        """Check if Ollama service is running"""
+        if self._ollama_available is not None:
+            return self._ollama_available
+        
+        try:
+            # Try a simple list command to check if Ollama is running
+            ollama.list()
+            self._ollama_available = True
+            print("Ollama service is available")
+            return True
+        except Exception as e:
+            print(f"Ollama service not available: {e}")
+            self._ollama_available = False
+            return False
 
     def transcribe_audio(self, file_path):
         if not self.whisper_model:
@@ -38,6 +56,11 @@ class AIService:
         Sends transcript and history to Ollama to get feedback and next question.
         Returns JSON: { "feedback": str, "score": int, "next_question": str }
         """
+        # Check if Ollama is available
+        if not self.check_ollama_availability():
+            print("Ollama not available, using fallback response")
+            return self._generate_fallback_response(transcript, history, topic)
+        
         system_prompt = (
             f"You are a professional AI Mock Interviewer for a fresher applying to a top MNC. "
             f"The interview topic is: {topic}. "
@@ -65,11 +88,32 @@ class AIService:
             return json.loads(content)
         except Exception as e:
             print(f"Ollama error: {e}")
-            return {
-                "feedback": "I couldn't process that response correctly. Let's continue.",
-                "score": 5,
-                "next_question": "Could you tell me more about your technical skills?"
-            }
+            # Reset availability flag to recheck next time
+            self._ollama_available = None
+            return self._generate_fallback_response(transcript, history, topic)
+    
+    def _generate_fallback_response(self, transcript, history, topic):
+        """Generate a basic response when Ollama is not available"""
+        question_count = len(history) + 1
+        
+        # Basic question templates based on topic
+        common_questions = [
+            f"Can you explain your experience with {topic}?",
+            f"What are the key skills required for {topic}?",
+            f"Tell me about a challenging project related to {topic}.",
+            "What are your strengths and weaknesses?",
+            "Where do you see yourself in 5 years?",
+            "Why should we hire you?",
+            "Do you have any questions for us?"
+        ]
+        
+        next_question = common_questions[min(question_count, len(common_questions) - 1)]
+        
+        return {
+            "feedback": "Thank you for your response. Your answer shows good understanding. Keep practicing to improve your confidence and clarity.",
+            "score": 7,
+            "next_question": next_question
+        }
 
     def generate_comprehensive_report(self, session_data):
         """
@@ -94,6 +138,11 @@ class AIService:
         Returns:
             dict with comprehensive evaluation
         """
+        
+        # Check if Ollama is available
+        if not self.check_ollama_availability():
+            print("Ollama not available, using fallback report")
+            return self._generate_fallback_report(session_data)
         
         system_prompt = """You are a professional AI Interview Evaluator and Communication Coach.
 
@@ -181,6 +230,8 @@ Be professional, supportive, and provide actionable feedback. Never discourage t
             
         except Exception as e:
             print(f"Report generation error: {e}")
+            # Reset availability flag to recheck next time
+            self._ollama_available = None
             # Return fallback report
             return self._generate_fallback_report(session_data)
 

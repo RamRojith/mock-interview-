@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response as APIResponse
 from rest_framework import status, parsers
@@ -76,6 +77,35 @@ def interview_view(request, session_id):
         context['initial_audio_url'] = audio_url
 
     return render(request, 'interview_core/interview.html', context)
+
+
+def health_check_view(request):
+    """Check the health status of all required services"""
+    health_status = {
+        'ollama': False,
+        'whisper': False,
+        'edge_tts': True,  # Assume available (online service)
+        'overall': False
+    }
+    
+    # Check Ollama
+    health_status['ollama'] = ai_service.check_ollama_availability()
+    
+    # Check Whisper
+    try:
+        model = ai_service.whisper_model
+        health_status['whisper'] = model is not None
+    except:
+        health_status['whisper'] = False
+    
+    # Overall status
+    health_status['overall'] = health_status['ollama'] and health_status['whisper']
+    
+    return JsonResponse({
+        'status': 'healthy' if health_status['overall'] else 'degraded',
+        'services': health_status,
+        'message': 'All services operational' if health_status['overall'] else 'Some services unavailable - using fallback mode'
+    })
 
 
 @method_decorator(csrf_exempt, name='dispatch')
