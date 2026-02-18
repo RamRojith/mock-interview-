@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Interview AI</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; }
+        button { background: #007bff; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background: #0056b3; }
+        h1 { color: #333; margin-bottom: 1.5rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Start Interview</h1>
+        <form id="start-form">
+            <input type="text" id="topic" placeholder="Interview Topic (e.g., Python Developer)" required>
+            <button type="submit">Start Session</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('start-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const topic = document.getElementById('topic').value;
+            
+            try {
+                const response = await fetch('/api/start-session/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ topic: topic })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    window.location.href = `/interview/${data.session_id}/`;
+                } else {
+                    alert('Failed to start session');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Error connecting to server');
+            }
+        });
+    </script>
+</body>
+</html>

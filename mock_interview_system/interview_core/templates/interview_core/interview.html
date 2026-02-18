@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Session</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        .question-box {
+            background: #e9ecef;
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            color: #495057;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        #record-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        #stop-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        #record-btn:disabled,
+        #stop-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .feedback-box {
+            margin-top: 1rem;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .score {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .status {
+            margin-bottom: 1rem;
+            font-style: italic;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h2>Mock Interview: {{ topic }}</h2>
+        <div class="status" id="status">Ready</div>
+
+        <div class="question-box" id="question-text">
+            Initializing interview...
+        </div>
+
+        <div class="controls">
+            <button id="record-btn">🎤 Start Answer</button>
+            <button id="stop-btn" disabled>⏹ Stop & Submit</button>
+        </div>
+
+        <div id="audio-container" style="margin-top: 1rem;">
+            <!-- Audio player for question -->
+            <audio id="audio-player" controls style="display: none; width: 100%;"></audio>
+        </div>
+    </div>
+
+    <div class="card feedback-box" id="feedback-container">
+        <h3>AI Feedback</h3>
+        <p><strong>Score:</strong> <span class="score" id="score"></span>/10</p>
+        <p id="feedback-text"></p>
+    </div>
+
+    <script>
+        const SESSION_ID = "{{ session_id }}";
+        const CSRF_TOKEN = "{{ csrf_token }}";
+
+        // Initial Data injected from Django View
+        const INITIAL_QUESTION = "{{ initial_question|escapejs }}";
+        const INITIAL_AUDIO_URL = "{{ initial_audio_url|default_if_none:'' }}";
+    </script>
+    {% load static %}
+    <script src="{% static 'js/interview.js' %}"></script>
+</body>
+
+</html>
