@@ -1,0 +1,81 @@
+{% extends 'interview_core/base.html' %}
+
+{% block title %}Interview Session - {{ topic }}{% endblock %}
+
+{% block content %}
+<section class="interview-section">
+    <div class="container-medium">
+        <!-- Interview Card -->
+        <div class="interview-card">
+            <div class="interview-header">
+                <h2 class="interview-title">Mock Interview: {{ topic }}</h2>
+                <div class="status-badge" id="status">Ready</div>
+            </div>
+
+            <!-- Question Display -->
+            <div class="question-display">
+                <label class="question-label">Current Question</label>
+                <div class="question-box" id="question-text">
+                    Initializing interview...
+                </div>
+            </div>
+
+            <!-- Audio Player -->
+            <div id="audio-container" class="audio-container">
+                <audio id="audio-player" controls class="audio-player"></audio>
+            </div>
+
+            <!-- Controls -->
+            <div class="interview-controls">
+                <button id="record-btn" class="btn-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                        <line x1="12" y1="19" x2="12" y2="23"></line>
+                        <line x1="8" y1="23" x2="16" y2="23"></line>
+                    </svg>
+                    <span>Start Answer</span>
+                </button>
+                <button id="stop-btn" class="btn-danger" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <rect x="6" y="6" width="12" height="12" rx="2"></rect>
+                    </svg>
+                    <span>Stop & Submit</span>
+                </button>
+                <a href="{% url 'interview_report' session_id %}" id="view-report-btn" class="btn-primary" style="display: none; text-decoration: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    <span>View Detailed Report</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Feedback Card -->
+        <div class="feedback-card" id="feedback-container">
+            <h3 class="feedback-title">AI Evaluation</h3>
+            <div class="score-display">
+                <span class="score-label">Score:</span>
+                <span class="score-value" id="score">-</span>
+                <span class="score-max">/10</span>
+            </div>
+            <div class="feedback-content">
+                <p id="feedback-text"></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const SESSION_ID = "{{ session_id }}";
+    const CSRF_TOKEN = "{{ csrf_token }}";
+    const INITIAL_QUESTION = "{{ initial_question|escapejs }}";
+    const INITIAL_AUDIO_URL = "{{ initial_audio_url|default_if_none:'' }}";
+</script>
+{% load static %}
+<script src="{% static 'js/interview.js' %}"></script>
+{% endblock %}

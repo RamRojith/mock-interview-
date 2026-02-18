@@ -1,0 +1,63 @@
+{% extends 'interview_core/base.html' %}
+
+{% block title %}AI Mock Interview Portal{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">Welcome to AI Mock Interview Portal</h1>
+        <p class="hero-subtitle">Practice technical and HR interviews using AI to improve confidence and performance</p>
+    </div>
+</section>
+
+<!-- Portal Cards Section -->
+<section class="portal-section">
+    <div class="container">
+        <h2 class="section-title">AI Interview Services</h2>
+        
+        <div class="portal-cards">
+            <!-- Card 1: Student Mock Interview -->
+            <div class="portal-card">
+                <div class="card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                    </svg>
+                </div>
+                <h3 class="card-title">Student Mock Interview</h3>
+                <p class="card-description">Practice AI-driven mock interviews tailored to your department and role.</p>
+                <a href="{% url 'interview_start' %}" class="card-button">Start Interview →</a>
+            </div>
+
+            <!-- Card 2: Interview History -->
+            <div class="portal-card">
+                <div class="card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <h3 class="card-title">Interview History</h3>
+                <p class="card-description">View past interviews, scores, and improvement suggestions.</p>
+                <a href="#" class="card-button card-button-disabled">View Reports →</a>
+            </div>
+
+            <!-- Card 3: Interview Guidelines -->
+            <div class="portal-card">
+                <div class="card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                        <line x1="12" y1="19" x2="12" y2="23"></line>
+                        <line x1="8" y1="23" x2="16" y2="23"></line>
+                    </svg>
+                </div>
+                <h3 class="card-title">Microphone Test</h3>
+                <p class="card-description">Test your microphone and troubleshoot access issues before starting.</p>
+                <a href="{% url 'mic_test' %}" class="card-button">Test Microphone →</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends 'interview_core/base.html' %}
+
+{% block title %}Start Interview{% endblock %}
+
+{% block content %}
+<section class="form-section">
+    <div class="container-small">
+        <div class="form-card">
+            <div class="form-header">
+                <h2 class="form-title">Student Login – AI Mock Interview</h2>
+                <p class="form-subtitle">Enter your details to begin the interview session</p>
+            </div>
+            
+            <form id="start-form" class="erp-form">
+                <div class="form-group">
+                    <label for="topic" class="form-label">Interview Topic</label>
+                    <input 
+                        type="text" 
+                        id="topic" 
+                        class="form-input" 
+                        placeholder="e.g., Python Developer, Data Analyst" 
+                        required
+                    >
+                    <span class="form-hint">Specify the role or domain for your mock interview</span>
+                </div>
+
+                <div class="info-box">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 16v-4"></path>
+                        <path d="M12 8h.01"></path>
+                    </svg>
+                    <span>Microphone access will be requested during the interview</span>
+                </div>
+
+                <button type="submit" class="btn-primary" id="submit-btn">
+                    <span>Login to Interview Portal</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    document.getElementById('start-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const topic = document.getElementById('topic').value;
+        const submitBtn = document.getElementById('submit-btn');
+        
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>Starting Session...</span>';
+        
+        try {
+            const response = await fetch('/api/start-session/', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify({ topic: topic })
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                window.location.href = `/interview/${data.session_id}/`;
+            } else {
+                const errorData = await response.json().catch(() => ({}));
+                alert('Failed to start session: ' + (errorData.error || 'Please try again.'));
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span>Login to Interview Portal</span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Error connecting to server. Please check your connection.');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>Login to Interview Portal</span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+        }
+    });
+</script>
+{% endblock %}

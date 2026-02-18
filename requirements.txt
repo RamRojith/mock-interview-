@@ -1,0 +1,10 @@
+django>=5.0
+djangorestframework
+markdown
+django-filter
+openai-whisper
+ollama
+pydub
+soundfile
+requests
+edge-tts
